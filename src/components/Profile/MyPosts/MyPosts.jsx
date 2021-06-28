@@ -4,6 +4,11 @@ import './MyPosts.css';
 import Post from './Post/Post';
 
 const MyPosts = () => {
+  let postsData = [
+    {id: 1, message: "Good day, how are you?", likesCount: 10},
+    {id: 2, message: "That is my first post", likesCount: 2},
+  ];
+
   return (
     <div className="postsBlock">
       <h3>My posts</h3>
