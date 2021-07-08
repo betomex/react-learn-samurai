@@ -1,5 +1,4 @@
 import React from 'react';
-
 import './MyPosts.css';
 import Post from './Post/Post';
 
@@ -12,7 +11,7 @@ const MyPosts = (props) => {
   let addPost = () => {
     let text = newPostElement.current.value;
     newPostElement.current.value = '';
-    alert(text);
+    props.addPost(text);
   }
 
   return (

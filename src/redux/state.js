@@ -1,3 +1,5 @@
+import {rerenderUI} from "../render";
+
 let state = {
   dialogsPage: {
     dialogs: [
@@ -21,6 +23,17 @@ let state = {
       {id: 4, message: "Yet another", likesCount: 11},
     ],
   }
+}
+
+export let addPost = (postMessage) => {
+  let newPost = {
+    id: 5,
+    message: postMessage,
+    likesCount: 0
+  };
+
+  state.profilePage.posts.push(newPost);
+  rerenderUI(state);
 }
 
 export default state;
