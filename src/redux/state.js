@@ -22,17 +22,24 @@ let state = {
       {id: 3, message: "New Post", likesCount: 11},
       {id: 4, message: "Yet another", likesCount: 11},
     ],
+    newPostText: 'test text for a new post'
   }
 }
 
-export let addPost = (postMessage) => {
+export let addPost = () => {
   let newPost = {
     id: 5,
-    message: postMessage,
+    message: state.profilePage.newPostText,
     likesCount: 0
   };
 
   state.profilePage.posts.push(newPost);
+  state.profilePage.newPostText = '';
+  rerenderUI(state);
+}
+
+export let updateNewPostText = (newText) => {
+  state.profilePage.newPostText = newText;
   rerenderUI(state);
 }
 
