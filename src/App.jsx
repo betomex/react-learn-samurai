@@ -11,19 +11,18 @@ const App = (props) => {
   return (
     <BrowserRouter>
       <div className='app-wrapper'>
-        <Header />
-        <Navbar />
+        <Header/>
+        <Navbar/>
         <div className='app-wrapper-content'>
           <Route exact path="/dialogs" render={() =>
-            <Dialogs state={props.state.dialogsPage} />
-          } />
+            <Dialogs state={props.state.dialogsPage}/>
+          }/>
           <Route path="/profile" render={() =>
             <Profile
               profilePage={props.state.profilePage}
-              addPost={props.addPost}
-              updateNewPostText={props.updateNewPostText}
+              dispatch={props.dispatch}
             />
-          } />
+          }/>
         </div>
       </div>
     </BrowserRouter>
