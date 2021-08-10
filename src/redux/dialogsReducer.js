@@ -14,25 +14,27 @@ let initialState = {
     {id: 2, message: "It's the best way to relax"},
     {id: 3, message: "What do you think about going for a walk?"},
   ],
-  newMessageText : "",
+  newMessageText: "",
 };
 
 const dialogsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case UPDATE_NEW_MESSAGE_TEXT:
-      state.newMessageText = action.newMText;
+    case UPDATE_NEW_MESSAGE_TEXT: {
+      let stateCopy = {...state};
+      stateCopy.newMessageText = action.newMText;
 
-      return state;
-    case SEND_MESSAGE:
-      let messageText = state.newMessageText;
-      state.newMessageText = '';
-      state.messages.push({id: 4, message: messageText});
+      return stateCopy;
+    }
+    case SEND_MESSAGE: {
+      let stateCopy = {...state};
+      let messageText = stateCopy.newMessageText;
+      stateCopy.newMessageText = '';
+      stateCopy.messages.push({id: 4, message: messageText});
 
-      return state;
-
+      return stateCopy;
+    }
     default:
       return state;
-
   }
 }
 
