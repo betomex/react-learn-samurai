@@ -5,7 +5,8 @@ const ProfileInfo = () => {
   return (
     <div>
       <div>
-        <img src='https://lirp-cdn.multiscreensite.com/9a66ad73/dms3rep/multi/opt/Muirwoods-optimized-1920w.jpg'/>
+        <img src='https://lirp-cdn.multiscreensite.com/9a66ad73/dms3rep/multi/opt/Muirwoods-optimized-1920w.jpg'
+             alt="pic"/>
       </div>
       <div className="descBlock">
         avatar + description
