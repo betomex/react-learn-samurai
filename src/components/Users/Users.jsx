@@ -4,9 +4,7 @@ import userAvatar from "../../assets/images/98-988072_go-to-image-add-user-icon-
 import * as axios from "axios";
 
 class Users extends React.Component {
-  constructor(props) {
-    super(props);
-
+  componentDidMount() {
     axios.get("https://social-network.samuraijs.com/api/1.0/users").then(r => {
       this.props.setUsers(r.data.items);
     });
