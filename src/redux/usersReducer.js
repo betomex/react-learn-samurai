@@ -1,34 +1,14 @@
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET-USERS';
+const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE';
+const SET_TOTAL_USERS_COUNT = 'SET-TOTAL-USERS-COUNT';
 
-let initialState = { users: []
-  // users: [
-  //   {
-  //     id: 1,
-  //     fullName: 'Ilya',
-  //     status: 'intoxicating, is not it?',
-  //     followed: true,
-  //     avatarUrl: 'https://sun9-79.userapi.com/impg/GvdIERgy93gHCLF_6jBhI1BCxDmMqQ9P6gYZ8A/t21FX9ZYsgg.jpg?size=2160x2160&quality=96&sign=a0a8a26ee2bea6cb55453e58f671ee06&type=album',
-  //     location: {country: 'Russia', city: 'Krasnodar'}
-  //   },
-  //   {
-  //     id: 2,
-  //     fullName: 'Makson',
-  //     status: 'croc is my life',
-  //     followed: false,
-  //     avatarUrl: 'https://sun9-79.userapi.com/impg/GvdIERgy93gHCLF_6jBhI1BCxDmMqQ9P6gYZ8A/t21FX9ZYsgg.jpg?size=2160x2160&quality=96&sign=a0a8a26ee2bea6cb55453e58f671ee06&type=album',
-  //     location: {country: 'Russia', city: 'Krasnodar'}
-  //   },
-  //   {
-  //     id: 3,
-  //     fullName: 'Oks',
-  //     status: 'i am proud of my boyfriend',
-  //     followed: true,
-  //     avatarUrl: 'https://sun9-79.userapi.com/impg/GvdIERgy93gHCLF_6jBhI1BCxDmMqQ9P6gYZ8A/t21FX9ZYsgg.jpg?size=2160x2160&quality=96&sign=a0a8a26ee2bea6cb55453e58f671ee06&type=album',
-  //     location: {country: 'Russia', city: 'Krasnodar'}
-  //   },
-  // ]
+let initialState = {
+  users: [],
+  pageSize: 5,
+  totalUsersCount: 0,
+  currentPage: 5
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -58,7 +38,19 @@ const usersReducer = (state = initialState, action) => {
     case SET_USERS: {
       return {
         ...state,
-        users: [...state.users, ...action.users]
+        users: action.users
+      }
+    }
+    case SET_CURRENT_PAGE: {
+      return {
+        ...state,
+        currentPage: action.currentPage
+      }
+    }
+    case SET_TOTAL_USERS_COUNT: {
+      return {
+        ...state,
+        totalUsersCount: action.totalUsersCount
       }
     }
     default:
@@ -71,5 +63,9 @@ export const followAC = (userID) => ({type: FOLLOW, userID})
 export const unfollowAC = (userID) => ({type: UNFOLLOW, userID})
 
 export const setUsersAC = (users) => ({type: SET_USERS, users})
+
+export const setCurrentPageAC = (currentPage) => ({type: SET_CURRENT_PAGE, currentPage})
+
+export const setTotalUsersCountAC = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount})
 
 export default usersReducer;
