@@ -1,3 +1,7 @@
 .descBlock {
     padding: 10px;
 }
+
+.descBlock img {
+    width: 100px;
+}

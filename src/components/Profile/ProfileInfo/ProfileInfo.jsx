@@ -9,7 +9,7 @@ const ProfileInfo = (props) => {
 
   return (
     <div>
-      <div>
+      <div className="profilePhoto">
         <img src='https://lirp-cdn.multiscreensite.com/9a66ad73/dms3rep/multi/opt/Muirwoods-optimized-1920w.jpg'
              alt="pic"/>
       </div>

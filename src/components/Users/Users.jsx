@@ -7,7 +7,7 @@ const Users = (props) => {
   let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
   let pages = [];
 
-  for (let i = 1; i <= pagesCount && i <= 10; i++) { //TODO =======================================================
+  for (let i = pagesCount; i >= pagesCount - 10; i--) { //TODO =======================================================
     pages.push(i);
   }
 
@@ -15,7 +15,7 @@ const Users = (props) => {
     <div>
       {pages.map(i => <span className={props.currentPage === i ? "selectedPage" : ""} key={i} onClick={() => {
         props.onCurrentPageChange(i)
-      }}>{i}</span>)}
+      }}>{i} </span>)}
     </div>
     {props.users.map(u => <div key={u.id}>
       <span>
