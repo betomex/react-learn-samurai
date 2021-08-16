@@ -1,3 +1,5 @@
+import {followAPI, usersAPI} from "../api/api";
+
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET-USERS';
@@ -76,22 +78,49 @@ const usersReducer = (state = initialState, action) => {
   }
 }
 
-export const follow = (userID) => ({type: FOLLOW, userID})
-
-export const unfollow = (userID) => ({type: UNFOLLOW, userID})
-
+export const followSuccess = (userID) => ({type: FOLLOW, userID})
+export const unfollowSuccess = (userID) => ({type: UNFOLLOW, userID})
 export const setUsers = (users) => ({type: SET_USERS, users})
-
 export const setCurrentPage = (currentPage) => ({type: SET_CURRENT_PAGE, currentPage})
-
 export const setTotalUsersCount = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount})
-
 export const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
-
 export const toggleIsFollowingInProgress = (isFollowingInProgress, userID) => ({
   type: TOGGLE_IS_FOLLOWING_IN_PROGRESS,
   isFollowingInProgress,
   userID
 })
+
+export const getUsers = (currentPage, pageSize) => {
+  return (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    usersAPI.getUsers(currentPage, pageSize).then(data => {
+      dispatch(setUsers(data.items));
+      dispatch(setTotalUsersCount(data.totalCount));
+      dispatch(toggleIsFetching(false));
+    });
+  }
+}
+export const follow = (userID) => {
+  return (dispatch) => {
+    dispatch(toggleIsFollowingInProgress(true, userID));
+    followAPI.postFollow(userID).then(data => {
+      if (data.resultCode === 0) {
+        dispatch(followSuccess(userID));
+      }
+      dispatch(toggleIsFollowingInProgress(false, userID));
+    });
+  }
+}
+export const unfollow = (userID) => {
+  return (dispatch) => {
+    dispatch(toggleIsFollowingInProgress(true, userID));
+    followAPI.deleteFollow(userID).then(data => {
+      if (data.resultCode === 0) {
+        dispatch(unfollowSuccess(userID));
+      }
+      dispatch(toggleIsFollowingInProgress(false, userID));
+    });
+  }
+}
 
 export default usersReducer;
