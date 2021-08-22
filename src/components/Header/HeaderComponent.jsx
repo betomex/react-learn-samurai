@@ -3,7 +3,7 @@ import React from 'react';
 import './Header.css';
 import Header from "./Header";
 import {connect} from "react-redux";
-import {getAuth, setAuthUserData} from "../../redux/authReducer";
+import {deleteLogin, getAuth, setAuthUserData} from "../../redux/authReducer";
 
 class HeaderComponent extends React.Component {
   componentDidMount() {
@@ -26,7 +26,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setAuthUserData,
-  getAuth
+  getAuth,
+  deleteLogin
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeaderComponent);

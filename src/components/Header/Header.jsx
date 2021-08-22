@@ -10,7 +10,13 @@ const Header = (props) => {
         src='https://www.ambiance-sticker.com/images/Image/sticker-origami-renard-intrigue-ambiance-sticker-col-SAND_A048.png'
         alt="logo"/>
       <div className="loginBlock">
-        {props.isAuth ? props.login : <NavLink to={'/login'}>Login</NavLink>}
+        {props.isAuth
+          ? <div>{props.login}
+              <br/>
+              <button onClick={props.deleteLogin}>Logout</button>
+            </div>
+          : <NavLink to={'/login'}>Login</NavLink>
+        }
       </div>
     </header>
   );
