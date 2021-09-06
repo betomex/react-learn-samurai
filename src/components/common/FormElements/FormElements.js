@@ -1,17 +1,16 @@
 import React from "react";
 import './FormElements.css';
 
-const FormElement = ({input, meta, child, ...props}) => {
-  const errorCondition = meta.error && meta.touched;
+const FormElement = ({meta: {error, touched}, children}) => {
+  const errorCondition = error && touched;
 
   return <div className={errorCondition ? "formControl error" : "formControl"}>
     <div>
-      {props.children}
+      {children}
     </div>
     <div>
-      {errorCondition ? <span>{meta.error}</span> : <></>}
+      {errorCondition ? <span>{error}</span> : <></>}
     </div>
-
   </div>
 }
 

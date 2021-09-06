@@ -8,8 +8,8 @@ import {postLogin} from "../../redux/authReducer";
 import {Redirect} from "react-router-dom";
 import '../common/FormElements/FormElements.css';
 
-const LoginForm = (props) => {
-  return <form onSubmit={props.handleSubmit}>
+const LoginForm = ({handleSubmit, error}) => {
+  return <form onSubmit={handleSubmit}>
     <div>
       <Field type={"text"} placeholder={"Email"} name={"email"} component={Input} validate={[required]}/>
     </div>
@@ -19,7 +19,7 @@ const LoginForm = (props) => {
     <div>
       <Field type="checkbox" component={"input"} name={"rememberMe"}/> Remember Me
     </div>
-    {props.error && <div className="form-summary-error">{props.error}</div>}
+    {error && <div className="form-summary-error">{error}</div>}
     <div>
       <button>Login</button>
     </div>
