@@ -1,11 +1,12 @@
-.selectedPage {
-    font-weight: bold;
-    color: white;
-}
-
 .page {
     border: 1px solid lightgray;
     margin-inline: 2px;
+}
+
+.selectedPage {
+    font-weight: bold;
+    color: white;
+    border: 3px solid lightgray;
 }
 
 .paginator {
