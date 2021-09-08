@@ -2,3 +2,12 @@
     font-weight: bold;
     color: white;
 }
+
+.page {
+    border: 1px solid lightgray;
+    margin-inline: 2px;
+}
+
+.paginator {
+    margin: 10px;
+}
