@@ -16,6 +16,6 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-window.store = store;
+window.state = store.getState();
 
 reportWebVitals();

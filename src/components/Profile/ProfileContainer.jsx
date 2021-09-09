@@ -2,13 +2,20 @@ import React from 'react';
 import './Profile.css';
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getProfileUserID, getStatusUserID, putStatus, setUserProfile} from "../../redux/profileReducer";
+import {
+  getProfileUserID,
+  getStatusUserID,
+  putPhoto,
+  putProfile,
+  putStatus,
+  setUserProfile
+} from "../../redux/profileReducer";
 import {withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 
 class ProfileContainer extends React.Component {
-  componentDidMount() {
+  updateProfile() {
     let userID = this.props.match.params.userID;
     if (!userID) {
       userID = this.props.myUserID;
@@ -20,11 +27,22 @@ class ProfileContainer extends React.Component {
     this.props.getStatusUserID(userID);
   }
 
+  componentDidMount() {
+    this.updateProfile();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.match.params.userID !== prevProps.match.params.userID) {
+      this.updateProfile();
+    }
+  }
+
   render() {
     return (
       <div>
         <Profile {...this.props} userProfile={this.props.userProfile} status={this.props.status}
-                 putStatus={this.props.putStatus}/>
+                 putStatus={this.props.putStatus} isOwner={!this.props.match.params.userID}
+                 putPhoto={this.props.putPhoto} putProfile={this.props.putProfile}/>
       </div>
     );
   }
@@ -43,7 +61,9 @@ const mapDispatchToProps = {
   setUserProfile,
   getProfileUserID,
   getStatusUserID,
-  putStatus
+  putStatus,
+  putPhoto,
+  putProfile
 }
 
 export default compose(

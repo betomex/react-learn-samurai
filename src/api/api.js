@@ -1,5 +1,4 @@
 import * as axios from "axios";
-import avatar from '../assets/images/avatar.png';
 
 const instance = axios.create({
   withCredentials: true,
@@ -39,9 +38,13 @@ export const profileAPI = {
     let body = {status: status};
     return instance.put(`profile/status`, body);
   },
-  putPhoto() {
-    let body = {image: avatar}
-    return instance.put(`profile/photo`, body);
+  putPhoto(photoFile) {
+    let formData = new FormData();
+    formData.append("image", photoFile);
+    return instance.put(`profile/photo`, formData);
+  },
+  putProfile(profile) {
+    return instance.put(`profile`, profile);
   }
 }
 
