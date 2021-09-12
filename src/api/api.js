@@ -18,8 +18,8 @@ export const authAPI = {
   getAuth() {
     return instance.get(`auth/me`);
   },
-  postLogin(email, password, rememberMe = false) {
-    let body = {email, password, rememberMe};
+  postLogin(email, password, rememberMe = false, captcha = null) {
+    let body = {email, password, rememberMe, captcha};
     return instance.post(`auth/login`, body);
   },
   deleteLogin() {
@@ -54,5 +54,11 @@ export const followAPI = {
   },
   postFollow(userID) {
     return instance.post(`follow/${userID}`).then(r => r.data);
+  }
+}
+
+export const securityAPI = {
+  getCaptcha() {
+    return instance.get(`security/get-captcha-url`);
   }
 }
