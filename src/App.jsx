@@ -2,7 +2,7 @@ import React from 'react';
 
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
-import {Route, withRouter} from "react-router-dom";
+import {Redirect, Route, withRouter} from "react-router-dom";
 import UsersContainer from "./components/Users/UsersContainer";
 import HeaderComponent from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
@@ -29,6 +29,7 @@ class App extends React.Component {
       <Navbar/>
       <div className='app-wrapper-content'>
         <React.Suspense fallback={<Preloader/>}>
+          <Redirect from="/" to="/profile" />
           <Route exact path="/dialogs" render={() =>
             <DialogsContainer/>
           }/>
@@ -41,6 +42,7 @@ class App extends React.Component {
           <Route path="/login" render={() =>
             <Login/>
           }/>
+          <Route path="*" render={() => <div>404 NOT FOUND</div>}/>
         </React.Suspense>
       </div>
     </div>
