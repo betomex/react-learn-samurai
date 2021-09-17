@@ -1,9 +1,19 @@
 import React, {useEffect, useState} from "react";
 import './Paginator.css';
 
-const Paginator = ({totalItemsCount, pageSize, currentPage, onCurrentPageChange, portionSize = 10}) => {
+type propsTypes = {
+  totalItemsCount: number,
+  pageSize: number,
+  currentPage: number,
+  onCurrentPageChange: (pageNumber: number) => void,
+  portionSize?: number
+}
+
+const Paginator: React.FC<propsTypes> = (
+    {totalItemsCount, pageSize, currentPage, onCurrentPageChange, portionSize = 10}
+    ) => {
   let pagesCount = Math.ceil(totalItemsCount / pageSize);
-  let pages = [];
+  let pages: Array<number> = [];
 
   for (let i = 1; i <= pagesCount; i++) {
     pages.push(i);
@@ -13,9 +23,9 @@ const Paginator = ({totalItemsCount, pageSize, currentPage, onCurrentPageChange,
 
   let [currentPortion, setCurrentPortion] = useState(Math.ceil(currentPage / portionSize));
   let [leftPortionEdge, setLeftPortionEdge] = useState(
-    currentPage % portionSize === 0
-      ? currentPage - portionSize + 1
-      : currentPage - (currentPage % portionSize) + 1
+      currentPage % portionSize === 0
+          ? currentPage - portionSize + 1
+          : currentPage - (currentPage % portionSize) + 1
   );
   let [rightPortionEdge, setRightPortionEdge] = useState(leftPortionEdge + portionSize - 1);
 
@@ -30,10 +40,10 @@ const Paginator = ({totalItemsCount, pageSize, currentPage, onCurrentPageChange,
     }}>&#8656;</button>}
 
     {pages
-      .filter(p => p >= leftPortionEdge && p <= rightPortionEdge)
-      .map(p => <span className={currentPage === p ? "selectedPage page" : "page"} key={p} onClick={() => {
-        onCurrentPageChange(p)
-      }}>{p} </span>)}
+        .filter(p => p >= leftPortionEdge && p <= rightPortionEdge)
+        .map(p => <span className={currentPage === p ? "selectedPage page" : "page"} key={p} onClick={() => {
+          onCurrentPageChange(p)
+        }}>{p} </span>)}
 
     {currentPortion < portionsCount && <button onClick={() => {
       setCurrentPortion(currentPortion + 1);
