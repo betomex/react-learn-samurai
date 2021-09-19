@@ -1,4 +1,4 @@
-import {authAPI, securityAPI} from "../api/api";
+import {authAPI, resultCodeCaptcha, resultCodeEnum, securityAPI} from "../api/api";
 import {stopSubmit} from "redux-form";
 
 const SET_USER_DATA = 'learnRedux/auth/SET-USER-DATA';
@@ -54,24 +54,24 @@ type getCaptchaUrlType = {
 export const getCaptchaUrl = (url: string): getCaptchaUrlType => ({type: GET_CAPTCHA, url})
 
 export const getAuth = () => async (dispatch: any) => {
-  let response = await authAPI.getAuth();
+  let data = await authAPI.getAuth();
 
-  if (response.data.resultCode === 0) {
-    let {id, email, login} = response.data.data;
+  if (data.resultCode === resultCodeEnum.Success) {
+    let {id, email, login} = data.data;
     dispatch(setAuthUserData(id, email, login, true));
   }
 }
 
 export const postLogin = (email: string, password: string, rememberMe: boolean, captcha: string) => async (dispatch: any) => {
-  let response = await authAPI.postLogin(email, password, rememberMe, captcha);
+  let data = await authAPI.postLogin(email, password, rememberMe, captcha);
 
-  if (response.data.resultCode === 0) {
+  if (data.resultCode === resultCodeEnum.Success) {
     dispatch(getAuth());
   } else {
-    if (response.data.resultCode === 10) {
+    if (data.resultCode === resultCodeCaptcha.CaptchaIsRequired) {
       dispatch(getCaptcha());
     }
-    let errorMessage = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
+    let errorMessage = data.messages.length > 0 ? data.messages[0] : "Some error";
     dispatch(stopSubmit("login", {_error: errorMessage}));
   }
 }
@@ -79,7 +79,7 @@ export const postLogin = (email: string, password: string, rememberMe: boolean, 
 export const deleteLogin = () => async (dispatch: any) => {
   let response = await authAPI.deleteLogin();
 
-  if (response.data.resultCode === 0) {
+  if (response.data.resultCode === resultCodeEnum.Success) {
     dispatch(setAuthUserData(null, null, null, false));
   }
 }

@@ -1,4 +1,5 @@
-import * as axios from "axios";
+import axios from "axios";
+import {profileType} from "../types/types";
 
 const instance = axios.create({
   withCredentials: true,
@@ -8,6 +9,33 @@ const instance = axios.create({
   }
 });
 
+export enum resultCodeEnum {
+  Success = 0,
+  Error = 1
+}
+
+export enum resultCodeCaptcha {
+  CaptchaIsRequired = 10
+}
+
+type getAuthType = {
+  data: {
+    id: number
+    email: string
+    login: string
+  }
+  resultCode: resultCodeEnum
+  messages: Array<string>
+}
+
+type postLoginType = {
+  data: {
+    userId: number
+  }
+  resultCode: resultCodeEnum | resultCodeCaptcha
+  messages: Array<string>
+}
+
 export const usersAPI = {
   getUsers(currentPage = 1, pageSize = 10) {
     return instance.get(`users?page=${currentPage}&count=${pageSize}`);
@@ -16,12 +44,11 @@ export const usersAPI = {
 
 export const authAPI = {
   getAuth() {
-    return instance.get(`auth/me`);
+    return instance.get<getAuthType>(`auth/me`).then(r => r.data);
   },
-  postLogin(email, password, rememberMe = false, captcha) {
-    console.log(captcha);
+  postLogin(email: string, password: string, rememberMe = false, captcha: null | string = null) {
     let body = {email, password, rememberMe, captcha};
-    return instance.post(`auth/login`, body);
+    return instance.post<postLoginType>(`auth/login`, body).then(r => r.data);
   },
   deleteLogin() {
     return instance.delete(`auth/login`);
@@ -29,31 +56,31 @@ export const authAPI = {
 }
 
 export const profileAPI = {
-  getProfileUserID(userID) {
+  getProfileUserID(userID: number) {
     return instance.get(`profile/${userID}`);
   },
-  getStatusUserID(userID) {
+  getStatusUserID(userID: number) {
     return instance.get(`profile/status/${userID}`);
   },
-  putStatus(status) {
+  putStatus(status: string) {
     let body = {status: status};
     return instance.put(`profile/status`, body);
   },
-  putPhoto(photoFile) {
+  putPhoto(photoFile: any) {
     let formData = new FormData();
     formData.append("image", photoFile);
     return instance.put(`profile/photo`, formData);
   },
-  putProfile(profile) {
+  putProfile(profile: profileType) {
     return instance.put(`profile`, profile);
   }
 }
 
 export const followAPI = {
-  deleteFollow(userID) {
+  deleteFollow(userID: number) {
     return instance.delete(`follow/${userID}`).then(r => r.data);
   },
-  postFollow(userID) {
+  postFollow(userID: number) {
     return instance.post(`follow/${userID}`).then(r => r.data);
   }
 }
