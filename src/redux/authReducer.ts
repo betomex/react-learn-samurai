@@ -1,5 +1,7 @@
-import {authAPI, resultCodeCaptcha, resultCodeEnum, securityAPI} from "../api/api";
+import {resultCodeCaptcha, resultCodeEnum} from "../api/api";
 import {stopSubmit} from "redux-form";
+import {authAPI} from "../api/authAPI";
+import {securityAPI} from "../api/securityAPI";
 
 const SET_USER_DATA = 'learnRedux/auth/SET-USER-DATA';
 const GET_CAPTCHA = 'GET-CAPTCHA';
@@ -85,8 +87,8 @@ export const deleteLogin = () => async (dispatch: any) => {
 }
 
 export const getCaptcha = () => async (dispatch: any) => {
-  const response = await securityAPI.getCaptcha();
-  dispatch(getCaptchaUrl(response.data.url));
+  const data = await securityAPI.getCaptcha();
+  dispatch(getCaptchaUrl(data.url));
 }
 
 export default authReducer;

@@ -1,6 +1,6 @@
-import {profileAPI} from "../api/api";
 import {stopSubmit} from "redux-form";
 import {photosType, postsType, profileType } from "../types/types";
+import {profileAPI} from "../api/profileAPI";
 
 const ADD_POST = 'ADD-POST';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
@@ -90,42 +90,42 @@ type setPhotoType = {
 export const setPhoto = (photos: photosType): setPhotoType => ({type: SET_PHOTO, photos})
 
 export const getProfileUserID = (userID: number) => async (dispatch: any) => {
-  let response = await profileAPI.getProfileUserID(userID);
+  let data = await profileAPI.getProfileUserID(userID);
 
-  dispatch(setUserProfile(response.data));
+  dispatch(setUserProfile(data));
 }
 
 export const getStatusUserID = (userID: number) => async (dispatch: any) => {
-  let response = await profileAPI.getStatusUserID(userID);
+  let data = await profileAPI.getStatusUserID(userID);
 
-  dispatch(setStatus(response.data));
+  dispatch(setStatus(data));
 }
 
 export const putStatus = (status: string) => async (dispatch: any) => {
-  let response = await profileAPI.putStatus(status);
+  let data = await profileAPI.putStatus(status);
 
-  if (response.data.resultCode === 0) {
+  if (data.resultCode === 0) {
     dispatch(setStatus(status));
   }
 }
 
 export const putPhoto = (file: any) => async (dispatch: any) => {
-  let response = await profileAPI.putPhoto(file);
+  let data = await profileAPI.putPhoto(file);
 
-  if (response.data.resultCode === 0) {
-    dispatch(setPhoto(response.data.data.photos));
+  if (data.resultCode === 0) {
+    dispatch(setPhoto(data.data.photos));
   }
 }
 
 export const putProfile = (profile: profileType) => async (dispatch: any, getState: any) => {
   const userID = getState().auth.userID;
-  let response = await profileAPI.putProfile(profile);
+  let data = await profileAPI.putProfile(profile);
 
-  if (response.data.resultCode === 0) {
+  if (data.resultCode === 0) {
     dispatch(getProfileUserID(userID));
   } else {
-    dispatch(stopSubmit("profileUpdateForm", {_error: response.data.messages[0]}));
-    return Promise.reject(response.data.messages[0]);
+    dispatch(stopSubmit("profileUpdateForm", {_error: data.messages[0]}));
+    return Promise.reject(data.messages[0]);
   }
 }
 

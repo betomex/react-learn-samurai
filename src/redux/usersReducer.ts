@@ -1,9 +1,10 @@
-import {followAPI, usersAPI} from "../api/api";
 import {updateObjectWithNewProps} from "../utils/reducersHandler";
 import {usersType} from "../types/types";
 import {ThunkAction} from "redux-thunk";
 import {appStateType, inferActionsTypes} from "./reduxStore";
 import {Dispatch} from "redux";
+import {usersAPI} from "../api/usersAPI";
+import {followAPI} from "../api/followAPI";
 
 let initialState = {
   users: [] as Array<usersType>,
@@ -91,11 +92,11 @@ type followUnfollowACType = (userID: number) => actionsTypes
 
 export const getUsers = (currentPage: number, pageSize: number): thunkType => async (dispatch, getState) => {
   dispatch(actions.toggleIsFetching(true));
-  let response = await usersAPI.getUsers(currentPage, pageSize);
+  let data = await usersAPI.getUsers(currentPage, pageSize);
 
   dispatch(actions.setCurrentPage(currentPage));
-  dispatch(actions.setUsers(response.data.items));
-  dispatch(actions.setTotalUsersCount(response.data.totalCount));
+  dispatch(actions.setUsers(data.items));
+  dispatch(actions.setTotalUsersCount(data.totalCount));
   dispatch(actions.toggleIsFetching(false));
 }
 
