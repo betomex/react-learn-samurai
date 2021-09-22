@@ -2,9 +2,11 @@ import {resultCodeCaptcha, resultCodeEnum} from "../api/api";
 import {stopSubmit} from "redux-form";
 import {authAPI} from "../api/authAPI";
 import {securityAPI} from "../api/securityAPI";
+import {baseThunkType, inferActionsTypes} from "./reduxStore";
 
-const SET_USER_DATA = 'learnRedux/auth/SET-USER-DATA';
-const GET_CAPTCHA = 'GET-CAPTCHA';
+export type initialStateType = typeof initialState;
+type actionsType = inferActionsTypes<typeof actions>
+type thunkType = baseThunkType<actionsType | ReturnType<typeof stopSubmit>>
 
 let initialState = {
   userID: null as number | null,
@@ -13,17 +15,16 @@ let initialState = {
   isAuth: false,
   captcha: null as string | null
 };
-export type initialStateType = typeof initialState;
 
-const authReducer = (state = initialState, action: any): initialStateType => {
+const authReducer = (state = initialState, action: actionsType): initialStateType => {
   switch (action.type) {
-    case SET_USER_DATA: {
+    case "AUTH/SET-USER-DATA": {
       return {
         ...state,
         ...action.data
       }
     }
-    case GET_CAPTCHA: {
+    case "AUTH/GET-CAPTCHA": {
       return {
         ...state,
         captcha: action.url
@@ -34,37 +35,25 @@ const authReducer = (state = initialState, action: any): initialStateType => {
   }
 }
 
-type setAuthUserDataActionType = {
-  userID: number | null,
-  email: string | null,
-  login: string | null,
-  isAuth: boolean
+export const actions = {
+  setAuthUserData: (userID: number | null, email: string | null, login: string | null, isAuth: boolean) => ({
+    type: 'AUTH/SET-USER-DATA',
+    data: {userID, email, login, isAuth}
+  } as const),
+  getCaptchaUrl: (url: string) => ({type: 'AUTH/GET-CAPTCHA', url} as const)
 }
-type setAuthUserDataType = {
-  type: typeof SET_USER_DATA,
-  data: setAuthUserDataActionType
-}
-export const setAuthUserData = (userID: number | null, email: string | null, login: string | null, isAuth: boolean): setAuthUserDataType => ({
-  type: SET_USER_DATA,
-  data: {userID, email, login, isAuth}
-})
 
-type getCaptchaUrlType = {
-  type: typeof GET_CAPTCHA,
-  url: string
-}
-export const getCaptchaUrl = (url: string): getCaptchaUrlType => ({type: GET_CAPTCHA, url})
-
-export const getAuth = () => async (dispatch: any) => {
+export const getAuth = (): thunkType => async (dispatch) => {
   let data = await authAPI.getAuth();
 
   if (data.resultCode === resultCodeEnum.Success) {
     let {id, email, login} = data.data;
-    dispatch(setAuthUserData(id, email, login, true));
+    dispatch(actions.setAuthUserData(id, email, login, true));
   }
 }
 
-export const postLogin = (email: string, password: string, rememberMe: boolean, captcha: string) => async (dispatch: any) => {
+export const postLogin =
+    (email: string, password: string, rememberMe: boolean, captcha: string): thunkType => async (dispatch) => {
   let data = await authAPI.postLogin(email, password, rememberMe, captcha);
 
   if (data.resultCode === resultCodeEnum.Success) {
@@ -78,17 +67,17 @@ export const postLogin = (email: string, password: string, rememberMe: boolean, 
   }
 }
 
-export const deleteLogin = () => async (dispatch: any) => {
+export const deleteLogin = (): thunkType => async (dispatch) => {
   let response = await authAPI.deleteLogin();
 
   if (response.data.resultCode === resultCodeEnum.Success) {
-    dispatch(setAuthUserData(null, null, null, false));
+    dispatch(actions.setAuthUserData(null, null, null, false));
   }
 }
 
-export const getCaptcha = () => async (dispatch: any) => {
+export const getCaptcha = (): thunkType => async (dispatch) => {
   const data = await securityAPI.getCaptcha();
-  dispatch(getCaptchaUrl(data.url));
+  dispatch(actions.getCaptchaUrl(data.url));
 }
 
 export default authReducer;

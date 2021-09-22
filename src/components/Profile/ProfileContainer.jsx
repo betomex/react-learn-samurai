@@ -2,14 +2,7 @@ import React from 'react';
 import './Profile.css';
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {
-  getProfileUserID,
-  getStatusUserID,
-  putPhoto,
-  putProfile,
-  putStatus,
-  setUserProfile
-} from "../../redux/profileReducer";
+import {getProfileUserID, getStatusUserID, putPhoto, putProfile, putStatus} from "../../redux/profileReducer";
 import {withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
@@ -58,7 +51,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  setUserProfile,
   getProfileUserID,
   getStatusUserID,
   putStatus,

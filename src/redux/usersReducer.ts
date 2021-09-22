@@ -1,10 +1,14 @@
 import {updateObjectWithNewProps} from "../utils/reducersHandler";
 import {usersType} from "../types/types";
-import {ThunkAction} from "redux-thunk";
-import {appStateType, inferActionsTypes} from "./reduxStore";
+import {baseThunkType, inferActionsTypes} from "./reduxStore";
 import {Dispatch} from "redux";
 import {usersAPI} from "../api/usersAPI";
 import {followAPI} from "../api/followAPI";
+
+export type initialStateType = typeof initialState
+type actionsTypes = inferActionsTypes<typeof actions>
+type followUnfollowACType = (userID: number) => actionsTypes
+type thunkType = baseThunkType<actionsTypes>
 
 let initialState = {
   users: [] as Array<usersType>,
@@ -14,7 +18,6 @@ let initialState = {
   isFetching: true,
   isFollowingInProgress: [] as Array<number> // array of users that is in progress
 };
-type initialStateType = typeof initialState
 
 const usersReducer = (state = initialState, action: actionsTypes): initialStateType => {
   switch (action.type) {
@@ -67,7 +70,6 @@ const usersReducer = (state = initialState, action: actionsTypes): initialStateT
   }
 }
 
-type actionsTypes = inferActionsTypes<typeof actions>
 
 export const actions = {
   followSuccess: (userID: number) => ({type: 'FOLLOW', userID} as const),
@@ -86,10 +88,6 @@ export const actions = {
   } as const)
 }
 
-type thunkType = ThunkAction<Promise<void>, appStateType, unknown, actionsTypes>
-type dispatchType = Dispatch<actionsTypes>
-type followUnfollowACType = (userID: number) => actionsTypes
-
 export const getUsers = (currentPage: number, pageSize: number): thunkType => async (dispatch, getState) => {
   dispatch(actions.toggleIsFetching(true));
   let data = await usersAPI.getUsers(currentPage, pageSize);
@@ -100,7 +98,7 @@ export const getUsers = (currentPage: number, pageSize: number): thunkType => as
   dispatch(actions.toggleIsFetching(false));
 }
 
-const _followUnfollow = async (dispatch: dispatchType, userID: number, apiMethod: any, actionCreator: followUnfollowACType) => {
+const _followUnfollow = async (dispatch: Dispatch<actionsTypes>, userID: number, apiMethod: any, actionCreator: followUnfollowACType) => {
   dispatch(actions.toggleIsFollowingInProgress(true, userID));
 
   let data = await apiMethod(userID);
