@@ -3,7 +3,7 @@ import React from 'react';
 import './Navbar.css';
 import {NavLink} from "react-router-dom";
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   return (
     <nav className="nav">
       <div className="navbar-item">

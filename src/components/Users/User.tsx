@@ -2,8 +2,16 @@ import React from "react";
 import userAvatar from "../../assets/images/98-988072_go-to-image-add-user-icon-clipart.png";
 import './Users.css';
 import {NavLink} from "react-router-dom";
+import {usersType} from "../../types/types";
 
-const User = ({user, isFollowingInProgress, follow, unfollow}) => {
+type propsType = {
+  user: usersType
+  isFollowingInProgress: Array<number>
+  follow: (userID: number) => void
+  unfollow: (userID: number) => void
+}
+
+const User: React.FC<propsType> = ({user, isFollowingInProgress, follow, unfollow}) => {
   return <div>
       <span>
         <div>

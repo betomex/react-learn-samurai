@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ComponentType} from 'react';
 
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
@@ -67,7 +67,7 @@ const mapDispatchToProps = {
   initializeApp
 }
 
-export default compose(
+export default compose<ComponentType>(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps)
 )(App);

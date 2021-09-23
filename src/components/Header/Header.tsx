@@ -3,7 +3,15 @@ import React from 'react';
 import './Header.css';
 import {NavLink} from "react-router-dom";
 
-const Header = (props) => {
+export type mapPropsType = {
+  isAuth: boolean
+  login: string | null
+}
+export type dispatchPropsType = {
+  deleteLogin: () => void
+}
+
+const Header: React.FC<mapPropsType & dispatchPropsType> = (props) => {
   return (
     <header className='header'>
       <img
@@ -12,9 +20,9 @@ const Header = (props) => {
       <div className="loginBlock">
         {props.isAuth
           ? <div>{props.login}
-              <br/>
-              <button onClick={props.deleteLogin}>Logout</button>
-            </div>
+            <br/>
+            <button onClick={props.deleteLogin}>Logout</button>
+          </div>
           : <NavLink to={'/login'}>Login</NavLink>
         }
       </div>
