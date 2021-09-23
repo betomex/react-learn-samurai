@@ -10,11 +10,17 @@ import {connect} from "react-redux";
 import {compose} from "redux";
 import {initializeApp} from "./redux/appReducer";
 import Preloader from "./components/common/Preloader/Preloader";
+import {appStateType} from "./redux/reduxStore";
 
 const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"));
 const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"));
 
-class App extends React.Component {
+type mapStateToPropsType = ReturnType<typeof mapStateToProps>
+type mapDispatchToPropsType = {
+  initializeApp: () => void
+}
+
+class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> {
   componentDidMount() {
     this.props.initializeApp();
   }
@@ -32,16 +38,16 @@ class App extends React.Component {
           <React.Suspense fallback={<Preloader/>}>
             <Redirect from="/" to="/profile"/>
             <Route exact path="/dialogs" render={() =>
-              <DialogsContainer/>
+                <DialogsContainer/>
             }/>
             <Route path="/profile/:userID?" render={() =>
-              <ProfileContainer/>
+                <ProfileContainer/>
             }/>
             <Route path="/users" render={() =>
-              <UsersContainer pageTitle={"Пользователи"}/>
+                <UsersContainer pageTitle={"Пользователи"}/>
             }/>
             <Route path="/login" render={() =>
-              <Login/>
+                <Login/>
             }/>
             <Route path="" render={() => <div>404 NOT FOUND</div>}/>
           </React.Suspense>
@@ -51,7 +57,7 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: appStateType) => {
   return {
     initialized: state.app.initialized
   }
@@ -62,6 +68,6 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+    withRouter,
+    connect(mapStateToProps, mapDispatchToProps)
 )(App);
