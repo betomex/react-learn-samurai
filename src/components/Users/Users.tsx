@@ -12,11 +12,9 @@ import {
   getTotalUsersCount,
   getUsersFilter,
   getUsersSelector
-} from "../../redux/usersSelectors";
+} from "../../redux/selectors/usersSelectors";
 
-type propsTypes = {}
-
-export const Users: React.FC<propsTypes> = (props) => {
+export const Users: React.FC = () => {
   const users = useSelector(getUsersSelector)
   const totalUsersCount = useSelector(getTotalUsersCount)
   const currentPage = useSelector(getCurrentPage)

@@ -2,7 +2,7 @@ import {useSelector} from "react-redux";
 import React from "react";
 import '../common/Preloader/Preloader.css';
 import Preloader from "../common/Preloader/Preloader";
-import {getIsFetching} from "../../redux/usersSelectors";
+import {getIsFetching} from "../../redux/selectors/usersSelectors";
 import { Users } from "./Users";
 
 type propsType = {
