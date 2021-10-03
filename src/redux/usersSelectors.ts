@@ -10,23 +10,23 @@ export const getUsersSelector = createSelector(getUsers,
   return users.filter(u => true);
 });
 
-export const getPageSizeSelector = (state: appStateType) => {
+export const getPageSize = (state: appStateType) => {
   return state.usersPage.pageSize
 }
 
-export const getTotalUsersCountSelector = (state: appStateType) => {
+export const getTotalUsersCount = (state: appStateType) => {
   return state.usersPage.totalUsersCount
 }
 
-export const getCurrentPageSelector = (state: appStateType) => {
+export const getCurrentPage = (state: appStateType) => {
   return state.usersPage.currentPage
 }
 
-export const getIsFetchingSelector = (state: appStateType) => {
+export const getIsFetching = (state: appStateType) => {
   return state.usersPage.isFetching
 }
 
-export const getIsFollowingInProgressSelector = (state: appStateType) => {
+export const getIsFollowingInProgress = (state: appStateType) => {
   return state.usersPage.isFollowingInProgress
 }
 

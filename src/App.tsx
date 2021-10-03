@@ -3,14 +3,14 @@ import React, {ComponentType} from 'react';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
-import UsersContainer from "./components/Users/UsersContainer";
 import HeaderComponent from "./components/Header/HeaderContainer";
-import Login from "./components/Login/Login";
 import {connect} from "react-redux";
 import {compose} from "redux";
 import {initializeApp} from "./redux/appReducer";
 import Preloader from "./components/common/Preloader/Preloader";
 import {appStateType} from "./redux/reduxStore";
+import {UsersPage} from "./components/Users/UsersPage";
+import { LoginPage } from './components/Login/LoginPage';
 
 const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"));
 const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"));
@@ -38,16 +38,16 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
           <React.Suspense fallback={<Preloader/>}>
             <Redirect from="/" to="/profile"/>
             <Route exact path="/dialogs" render={() =>
-                <DialogsContainer/>
+              <DialogsContainer/>
             }/>
             <Route path="/profile/:userID?" render={() =>
-                <ProfileContainer/>
+              <ProfileContainer/>
             }/>
             <Route path="/users" render={() =>
-                <UsersContainer pageTitle={"Пользователи"}/>
+              <UsersPage pageTitle={"Пользователи"}/>
             }/>
             <Route path="/login" render={() =>
-                <Login/>
+              <LoginPage/>
             }/>
             {/*<Route path="" render={() => <div>404 NOT FOUND</div>}/>*/}
           </React.Suspense>
@@ -68,6 +68,6 @@ const mapDispatchToProps = {
 }
 
 export default compose<ComponentType>(
-    withRouter,
-    connect(mapStateToProps, mapDispatchToProps)
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
 )(App);
