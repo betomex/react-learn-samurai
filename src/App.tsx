@@ -49,7 +49,7 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
             <Route path="/login" render={() =>
                 <Login/>
             }/>
-            <Route path="" render={() => <div>404 NOT FOUND</div>}/>
+            {/*<Route path="" render={() => <div>404 NOT FOUND</div>}/>*/}
           </React.Suspense>
         </Switch>
       </div>
