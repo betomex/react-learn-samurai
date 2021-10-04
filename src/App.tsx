@@ -11,13 +11,15 @@ import {UsersPage} from "./components/Users/UsersPage";
 import {LoginPage} from './components/Login/LoginPage';
 
 import {Breadcrumb, Layout, Menu} from 'antd';
-import {LaptopOutlined, UserOutlined} from '@ant-design/icons';
-import { Header } from './components/Header/Header';
+import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons';
+import {Header} from './components/Header/Header';
+import {NotFound} from "./components/common/NotFound";
 
 const {SubMenu} = Menu;
 const {Content, Footer, Sider} = Layout;
 const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"));
 const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"));
+const ChatPage = React.lazy(() => import("./pages/Chat/ChatPage"));
 
 type mapStateToPropsType = ReturnType<typeof mapStateToProps>
 type mapDispatchToPropsType = {
@@ -59,16 +61,23 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
                 </Menu.Item>
               </SubMenu>
               <SubMenu key="sub2" icon={<LaptopOutlined/>} title="Developers">
-                <Menu.Item key="5">
+                <Menu.Item key="3">
                   <Link to="/developers">Users</Link>
+                </Menu.Item>
+              </SubMenu>
+              <SubMenu key="sub3" icon={<NotificationOutlined/>} title="Chat">
+                <Menu.Item key="4">
+                  <Link to="/chat">Chat</Link>
                 </Menu.Item>
               </SubMenu>
             </Menu>
           </Sider>
           <Content style={{padding: '0 24px', minHeight: 280}}>
-            <Switch>
-              <React.Suspense fallback={<Preloader/>}>
-                {/*<Redirect from="/" to="/profile"/>*/}
+            <React.Suspense fallback={<Preloader/>}>
+              <Switch>
+                <Route exact path="/" render={() =>
+                  <Redirect from="/" to="/profile"/>
+                }/>
                 <Route exact path="/dialogs" render={() =>
                   <DialogsContainer/>
                 }/>
@@ -81,9 +90,14 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
                 <Route path="/login" render={() =>
                   <LoginPage/>
                 }/>
-                {/*<Route path="" render={() => <div>404 NOT FOUND</div>}/>*/}
-              </React.Suspense>
-            </Switch>
+                <Route path="/chat" render={() =>
+                  <ChatPage/>
+                }/>
+                <Route render={() =>
+                  <NotFound/>
+                }/>
+              </Switch>
+            </React.Suspense>
           </Content>
         </Layout>
       </Content>
