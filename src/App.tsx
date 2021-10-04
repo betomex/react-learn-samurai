@@ -68,7 +68,7 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
           <Content style={{padding: '0 24px', minHeight: 280}}>
             <Switch>
               <React.Suspense fallback={<Preloader/>}>
-                <Redirect from="/" to="/profile"/>
+                {/*<Redirect from="/" to="/profile"/>*/}
                 <Route exact path="/dialogs" render={() =>
                   <DialogsContainer/>
                 }/>

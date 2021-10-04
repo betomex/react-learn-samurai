@@ -3,7 +3,7 @@ import './Users.css';
 import Paginator from "../common/Paginator/Paginator";
 import User from "./User";
 import {UsersSearchForm} from "./UsersSearchForm";
-import {filterType, getUsers, postFollow, deleteFollow} from "../../redux/usersReducer";
+import {deleteFollow, filterType, getUsers, postFollow} from "../../redux/usersReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {
   getCurrentPage,
@@ -13,6 +13,8 @@ import {
   getUsersFilter,
   getUsersSelector
 } from "../../redux/selectors/usersSelectors";
+import {useHistory} from "react-router-dom";
+import * as queryString from "querystring";
 
 export const Users: React.FC = () => {
   const users = useSelector(getUsersSelector)
@@ -23,10 +25,27 @@ export const Users: React.FC = () => {
   const isFollowingInProgress = useSelector(getIsFollowingInProgress)
 
   const dispatch = useDispatch()
+  const history = useHistory()
 
   useEffect(() => {
-    dispatch(getUsers(currentPage, pageSize, filter))
+    const parsedSearch = queryString.parse(history.location.search.substr(1)) as { term: string, friend: string, page: string }
+    let actualPage = currentPage
+    let actualFilter = filter
+
+    if (!!parsedSearch.page) actualPage = Number(parsedSearch.page)
+    if (!!parsedSearch.term) actualFilter = {...actualFilter, term: parsedSearch.term as string}
+    if (!!parsedSearch.friend) actualFilter =
+      {...actualFilter, friend: parsedSearch.friend === "null" ? null : parsedSearch.friend === "true"}
+
+    dispatch(getUsers(actualPage, pageSize, actualFilter))
   }, [])
+
+  useEffect(() => {
+    history.push({
+      pathname: '/developers',
+      search: `?term=${filter.term}&friend=${filter.friend}&page=${currentPage}`
+    })
+  }, [filter, currentPage])
 
   const onCurrentPageChange = (pageNumber: number) => {
     dispatch(getUsers(pageNumber, pageSize, filter))
