@@ -53,8 +53,8 @@ const Messages: React.FC = () => {
   }
 
   return <div style={{height: "350px", overflowY: "auto"}} onScroll={scrollHandler}>
-    {messages.map((m, index) => <Message key={m.id} message={m}/>)}
-    <div ref={messagesAnchorRef}></div>
+    {messages.map((m) => <Message key={m.id} message={m}/>)}
+    <div ref={messagesAnchorRef}>{}</div>
   </div>
 }
 
